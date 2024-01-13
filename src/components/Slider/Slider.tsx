@@ -4,6 +4,8 @@ import 'swiper/css';
 import 'swiper/css/free-mode';
 import { Card } from '../../pages';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import {basePath} from '../../../next.config';
 
 // формы слайдов 1 - лепесток, 2 - лепесток в другую сторону, 3 - круг, 4 - скргугленные углы
 const circleShapeNumber = 3;
@@ -51,18 +53,24 @@ const Slider = ({cardList}: {cardList: Card[]}) => {
           );
         })}
       </Swiper>
-      <div className="swiper-button-prev" id="prev">
+      <button className="swiper-button-prev" id="prev">
         <picture>
-          <source srcSet="/images/arrow_s.svg" media="(max-width: 420px)" />
-          <img src="/images/arrow.svg" alt="arrow" />
+          <source srcSet={`${basePath}/images/arrow_s.svg`} media="(max-width: 420px)" />
+          <Image 
+            fill={true}
+            src={`${basePath}/images/arrow.svg`}
+            alt="arrow" />
         </picture>
-      </div>
-      <div className="swiper-button-next" id="next">
+      </button>
+      <button className="swiper-button-next" id="next">
         <picture>
-          <source srcSet="/images/arrow_s.svg" media="(max-width: 420px)" />
-          <img src="/images/arrow.svg" alt="arrow" />
+          <source srcSet={`${basePath}/images/arrow_s.svg`} media="(max-width: 420px)" />
+          <Image 
+            fill={true}
+            src={`${basePath}/images/arrow.svg`}
+            alt="arrow" />
         </picture>
-      </div>
+      </button>
     </div>
   );
 };

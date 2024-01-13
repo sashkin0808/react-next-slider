@@ -68,7 +68,14 @@ img {
     bottom: 12px;
     width: 173px;
     height: 23px;
+    background: none;
+    border: none;
     cursor: pointer;
+
+    @media screen and (max-width: 420px) {
+      width: 24px;
+      height: 24px;
+    }
 
     img {
       filter: invert(92%) sepia(3%) saturate(1564%) hue-rotate(190deg) brightness(92%) contrast(92%);
