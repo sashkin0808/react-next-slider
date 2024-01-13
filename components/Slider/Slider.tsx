@@ -1,0 +1,69 @@
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, FreeMode } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import { Card } from '../../pages';
+import { useEffect, useState } from 'react';
+
+// формы слайдов 1 - лепесток, 2 - лепесток в другую сторону, 3 - круг, 4 - скргугленные углы
+const circleShapeNumber = 3;
+
+const randomIntFromInterval = (min: number, max: number, prev: number): number => { 
+  let randomVal = Math.floor(Math.random() * (max - min + 1) + min);
+  // два круга не должны идти друг за другом
+  while (randomVal === circleShapeNumber && prev === circleShapeNumber) {
+    randomVal = Math.floor(Math.random() * (max - min + 1) + min);
+  }
+  return randomVal;
+};
+
+const Slider = ({cardList}: {cardList: Card[]}) => {
+  const [shapes, setShapes] = useState<number[]>([]);
+
+  useEffect(() => {
+    let prevRandomValue = 0;
+    cardList.forEach(() => {
+      const randomVal = randomIntFromInterval(1, 4, prevRandomValue);
+      prevRandomValue = randomVal;
+      setShapes(shape => [...shape, randomVal]);
+    });
+  },[cardList]);
+  
+  return (
+    <div className="slider">
+      <Swiper
+        slidesPerView={'auto'}
+        spaceBetween={0}
+        freeMode={true}
+        modules={[FreeMode, Navigation]}
+        navigation={{
+          nextEl: '#next',
+          prevEl: '#prev',
+        }}
+      >
+        {cardList.map((el: Card, index) => {
+          return (
+            <SwiperSlide key={el.id} className={`card type${shapes[index]} ${el.title.length > 35 ? 'big' : ''}`}>
+              <img src={el.img} alt={el.title} className="card__img"/>
+              <span className="card__title">{el.title}</span>
+              <span className="card__date">{el.date}</span>
+            </SwiperSlide>
+          );
+        })}
+      </Swiper>
+      <div className="swiper-button-prev" id="prev">
+        <picture>
+          <source srcSet="/images/arrow_s.svg" media="(max-width: 420px)" />
+          <img src="/images/arrow.svg" alt="arrow" />
+        </picture>
+      </div>
+      <div className="swiper-button-next" id="next">
+        <picture>
+          <source srcSet="/images/arrow_s.svg" media="(max-width: 420px)" />
+          <img src="/images/arrow.svg" alt="arrow" />
+        </picture>
+      </div>
+    </div>
+  );
+};
+export default Slider;
